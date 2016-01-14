@@ -37,6 +37,30 @@
           this.htmlElements[i].innerHTML += item.htmlElements[j].outerHTML;
         }
       }
+    } else if (item instanceof HTMLElement) {
+      for (var i = 0; i < this.htmlElements.length; i++) {
+        this.htmlElements[i].innerHTML += item.outerHTML;
+      }
+    } else if (typeof item === "string") {
+      for (var i = 0; i < this.htmlElements.length; i++) {
+        this.htmlElements[i].innerHTML += item;
+      }
+    }
+  };
+
+  DOMNodeCollection.prototype.attr = function (key, value) {
+    if (typeof value === "undefined") {
+      for (var i = 0; i < this.htmlElements.length; i++) {
+        try {
+          return this.htmlElements[i].attributes[key].nodeValue;
+        } catch (e) {
+          break;
+        }
+      }
+    } else {
+      for (var i = 0; i < this.htmlElements.length; i++) {
+        var node = this.htmlElements[i].setAttribute(key, value);
+      }
     }
   };
 
