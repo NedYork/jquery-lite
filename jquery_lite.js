@@ -64,5 +64,43 @@
     }
   };
 
+  Array.prototype.delete = function (el) {
+    var newArray = [];
+    for (var i = 0; i < this.length; i++) {
+      if (!(this[i] === el)) {
+        newArray.push(this[i]);
+      }
+    }
+    return newArray;
+  };
 
+  DOMNodeCollection.prototype.addClass = function (className) {
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      var currClass = this.htmlElements[i].getAttribute("class");
+      if (currClass === null) {
+        this.htmlElements[i].setAttribute("class", className);
+      } else {
+        this.htmlElements[i].setAttribute("class",
+          currClass + " " + className);
+      }
+    }
+  };
+
+  DOMNodeCollection.prototype.removeClass = function (className) {
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      if (className === undefined) {
+        this.htmlElements[i].removeAttribute("class");
+      } else {
+        if (this.htmlElements[i].hasAttribute("class")) {
+          var currClass = this.htmlElements[i].getAttribute("class");
+          currClass = currClass.split(" ").delete(className).join(" ");
+          if (currClass.length === 0) {
+            this.htmlElements[i].removeAttribute("class");
+          } else {
+            this.htmlElements[i].setAttribute("class", currClass);
+          }
+        }
+      }
+    }
+  };
 })();
