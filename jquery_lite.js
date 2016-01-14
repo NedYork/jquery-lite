@@ -103,4 +103,26 @@
       }
     }
   };
+
+
+  DOMNodeCollection.prototype.children = function () {
+    var arrayOfNodes = [];
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      for (var j = 0; j < this.htmlElements[i].children.length; j++) {
+        arrayOfNodes.push(this.htmlElements[i].children[j]);
+      }
+    }
+    return new DOMNodeCollection(arrayOfNodes);
+  };
+
+  DOMNodeCollection.prototype.parent = function () {
+    var arrayOfNodes = [];
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      var parent = this.htmlElements[i].parentNode;
+      if (!arrayOfNodes.includes(parent)) {
+        arrayOfNodes.push(parent);
+      }
+    }
+    return new DOMNodeCollection(arrayOfNodes);
+  };
 })();
