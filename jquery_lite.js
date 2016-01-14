@@ -1,13 +1,37 @@
 (function () {
   window.$l = function (input) {
     var nodeCollection;
+    var callbacks = [];
     if (typeof input === "string") {
       nodeCollection = document.querySelectorAll(input);
       nodeCollection = [].slice.call(nodeCollection);
     } else if (input instanceof HTMLElement) {
       nodeCollection = [input];
+    } else if (typeof input === "function") {
+      callbacks.push(input);
+      document.addEventListener( 'DOMContentLoaded', function () {
+        for(var i = 0; i < callbacks.length; i++) {
+          callbacks[i].call(callbacks[i]);
+        }
+      }, false );
+
     }
     return new DOMNodeCollection(nodeCollection);
+  };
+
+  window.$l.extend = function () {
+    var first = arguments[0];
+    var objects = [].slice.call(arguments, 1);
+    for (var i = 0; i < objects.length; i++) {
+      var keys = Object.getOwnPropertyNames(objects[i]);
+      for (var j = 0; j < keys.length; j++) {
+        first[keys[j]] = objects[i][keys[j]];
+      }
+    }
+  };
+
+  window.$l.ajax = function (options) {
+    var defaults = {};
   };
 
   var DOMNodeCollection = function (htmlElements) {
