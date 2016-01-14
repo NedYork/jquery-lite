@@ -24,5 +24,21 @@
     }
   };
 
+  DOMNodeCollection.prototype.empty = function () {
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      this.htmlElements[i].innerHTML = "";
+    }
+  };
+
+  DOMNodeCollection.prototype.append = function (item) {
+    if (item instanceof DOMNodeCollection) {
+      for (var i = 0; i < this.htmlElements.length; i++) {
+        for (var j = 0; j < item.htmlElements.length; j++) {
+          this.htmlElements[i].innerHTML += item.htmlElements[j].outerHTML;
+        }
+      }
+    }
+  };
+
 
 })();
