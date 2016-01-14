@@ -31,8 +31,35 @@
   };
 
   window.$l.ajax = function (options) {
-    var defaults = {};
+    var defaults = {
+      success: function (data) {
+        console.log(data);
+      },
+      error: function () {
+        console.log("error occurred");
+      },
+      url: document.URL,
+      data: "",
+      method: 'GET',
+      contentType: 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+
+
+    window.$l.extend(defaults, options);
+    var xhReq = new XMLHttpRequest();
+    xhReq.open(options.method, options.url, false);
+    xhReq.send(options.data);
+    var serverResponse = xhReq.responseText;
+    if (xhReq.status === 200) {
+      options.success.call(null, serverResponse);
+    }
+    else {
+      options.error.call(null);
+    }
+
   };
+
+
 
   var DOMNodeCollection = function (htmlElements) {
     this.htmlElements = htmlElements;
