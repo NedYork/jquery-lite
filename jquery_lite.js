@@ -125,4 +125,37 @@
     }
     return new DOMNodeCollection(arrayOfNodes);
   };
+
+
+  DOMNodeCollection.prototype.find = function (selector) {
+    var result = [];
+    var nodes;
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      nodes = this.htmlElements[i].querySelectorAll(selector);
+      for (var j = 0; j < nodes.length; j++) {
+        result.push(nodes[j]);
+      }
+    }
+    return new DOMNodeCollection(result);
+  };
+
+  DOMNodeCollection.prototype.remove = function () {
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      this.htmlElements[i].outerHTML = "";
+    }
+    this.htmlElements = [];
+  };
+
+  DOMNodeCollection.prototype.on = function (type, listener) {
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      this.htmlElements[i].addEventListener(type, listener);
+    }
+  };
+
+  DOMNodeCollection.prototype.off = function (type, listener) {
+    for (var i = 0; i < this.htmlElements.length; i++) {
+      this.htmlElements[i].removeEventListener(type, listener);
+    }
+  };
+
 })();
